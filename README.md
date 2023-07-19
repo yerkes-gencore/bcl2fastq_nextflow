@@ -1,5 +1,3 @@
-[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)
-
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A522.10.1-23aa62.svg)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
@@ -8,7 +6,7 @@
 
 ## Introduction
 
-**yerkes-gencore/bcl2fastq** is a bioinformatics pipeline that ...
+**yerkes-gencore/bcl2fastq** runs `bcl2fastq` on a sequencing run output
 
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
@@ -20,8 +18,15 @@
      workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
 <!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
 
-1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+1. Check run directory for RTAComplete file indicating sequencing is finished
+2. Perform extraction via `bcl2fastq`
+3. Extract demultiplexing summaries for each samplesheet
+4. Calculate md5sums for extracted FASTQs
+
+Possible future features:
+* Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
+* Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+* AWS S3 sync
 
 ## Usage
 
@@ -52,10 +57,12 @@ Now, you can run the pipeline using:
 
 ```bash
 nextflow run yerkes-gencore/bcl2fastq \
-   -profile <docker/singularity/.../institute> \
-   --input samplesheet.csv \
-   --outdir <OUTDIR>
+   -profile <local_asap/local_delayed/...> \
+   --run_dir <your directory>
 ```
+
+Optionally, you can specify additional parameters on the command line, or edit many in a parameters provided via
+`-params-file`
 
 > **Warning:**
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those
@@ -66,13 +73,7 @@ nextflow run yerkes-gencore/bcl2fastq \
 
 yerkes-gencore/bcl2fastq was originally written by Derrik Gratz.
 
-We thank the following people for their extensive assistance in the development of this pipeline:
-
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
-
 ## Contributions and Support
-
-If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
 
 ## Citations
 
