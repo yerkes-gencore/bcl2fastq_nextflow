@@ -1,0 +1,3 @@
+prefix: yerkes-gencore
+skip:
+- igenomes
